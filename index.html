@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SatuLook - Fashion Fusion Terbaik</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes blob {
+            0% { transform: translate(0px, 0px) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+            100% { transform: translate(0px, 0px) scale(1); }
+        }
+        .animate-fadeIn {
+            animation: fadeIn 1s ease-out;
+        }
+        .animate-blob {
+            animation: blob 7s infinite;
+        }
+        .animation-delay-2000 {
+            animation-delay: 2s;
+        }
+        .product-card {
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .product-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        .category-tab {
+            transition: all 0.3s ease;
+        }
+        .category-tab.active {
+            border-bottom: 4px solid #8b5cf6;
+            color: #8b5cf6;
+            font-weight: 600;
+            transform: scale(1.05);
+        }
+        .cart-notification {
+            animation: bounce 0.6s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+        }
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            30% { transform: scale(1.15); }
+            60% { transform: scale(0.95); }
+        }
+        #productModal {
+            transition: opacity 0.3s ease;
+        }
+        #productModal .modal-content {
+            animation: modalFadeIn 0.3s ease;
+        }
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-3 sm:px-4 py-2 sm:py-3 flex justify-between items-center">
+            <div class="flex items-center">
+                <img src="/Users/user/Desktop/WhatsApp Image 2025-07-06 at 15.36.01.jpeg" alt="SatuLook Logo - Fashion fusion modern dengan sentuhan urban" class="h-10">
+                <h1 class="ml-3 text-xl font-bold text-gray-800">SATULOOK</h1>
+            </div>
+            
+            <div class="relative w-full max-w-xl mx-4 hidden md:block"> <!-- Hidden on mobile, visible on desktop -->
+                <input type="text" placeholder="Cari produk..." class="w-full py-2 px-4 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <button class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-blue-500">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <button id="cartBtn" class="relative">
+                    <i class="fas fa-shopping-cart text-xl text-gray-700 hover:text-blue-500"></i>
+                    <span id="cartCounter" class="absolute -top-3 -right-3 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm hidden">0</span>
+                </button>
+                <button class="hidden md:block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition">Login</button>
+                <div class="md:hidden relative"> <!-- Visible on mobile, hidden on desktop -->
+                    <button id="mobileMenuBtn" class="p-2">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                    <div id="mobileMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
+                        <a href="#" id="mobileHome" class="block px-4 py-2 text-gray-800 hover:bg-blue-50">Home</a>
+                        <a href="#" id="mobileProduk" class="block px-4 py-2 text-gray-800 hover:bg-blue-50">Produk</a>
+                        <a href="#" id="mobileKontak" class="block px-4 py-2 text-gray-800 hover:bg-blue-50">Kontak</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Navigation (Always visible on desktop) -->
+        <nav class="border-t border-gray-200 hidden md:block"> 
+            <div class="container mx-auto px-4 flex justify-center"> <!-- Centered navigation for desktop -->
+                <a href="#" id="homeLink" class="px-6 py-3 font-medium text-gray-700 whitespace-nowrap hover:text-blue-600">Home</a>
+                <a href="#" id="produkLink" class="px-6 py-3 font-medium text-gray-700 whitespace-nowrap hover:text-blue-600">Produk</a>
+                <a href="#" id="kontakLink" class="px-6 py-3 font-medium text-gray-700 whitespace-nowrap hover:text-blue-600">Kontak</a>
+            </div>
+        </nav>
+
+        <!-- Category Tabs -->
+        <nav class="border-t border-gray-200 bg-gray-50">
+            <div class="container mx-auto px-2 sm:px-4 flex overflow-x-auto md:justify-center"> <!-- Centered categories for desktop -->
+                <button class="category-tab px-6 py-3 font-medium text-gray-700 whitespace-nowrap active" data-category="all">Semua</button>
+                <button class="category-tab px-4 py-3 font-medium text-gray-700 whitespace-nowrap" data-category="shoes">Sepatu</button>
+                <button class="category-tab px-4 py-3 font-medium text-gray-700 whitespace-nowrap" data-category="bags">Tas</button>
+                <button class="category-tab px-4 py-3 font-medium text-gray-700 whitespace-nowrap" data-category="clothes">Pakaian</button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative bg-gradient-to-r from-purple-600 to-blue-500 py-12 sm:py-16 md:py-20 overflow-hidden">
+        <div class="absolute inset-0 opacity-20">
+            <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgZmlsbD0ibm9uZSIvPjxyZWN0IHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgeD0iMCIgeT0iMCIgZmlsbD0id2hpdGUiIGZpbGwtb3BhY2l0eT0iMC4xIiB0cmFuc2Zvcm09InJvdGF0ZSg0NSwgMzAsIDMwKSIvPjwvc3ZnPg==')]"></div>
+        </div>
+        <div class="container mx-auto px-4 flex flex-col md:flex-row items-center relative z-10">
+            <div class="md:w-1/2 mb-10 md:mb-0 md:pr-8 text-center md:text-left"> <!-- Centered text on mobile, left-aligned on desktop -->
+                <h2 class="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight animate-fadeIn">Koleksi Fashion</h2>
+                <p class="text-xl text-white/90 mb-8">Temukan gaya sempurna untuk setiap kesempatan dengan kualitas premium eksklusif.</p>
+                <div class="flex flex-wrap gap-4 justify-center md:justify-start"> <!-- Centered buttons on mobile, left-aligned on desktop -->
+                    <button id="shopNowBtn" class="bg-white text-purple-700 hover:bg-gray-100 px-8 py-4 rounded-full font-bold text-lg transition-all transform hover:scale-105 shadow-xl">
+                        Belanja Sekarang
+                    </button>
+                    <button id="viewCollectionsBtn" class="bg-transparent border-2 border-white text-white hover:bg-white/10 px-8 py-4 rounded-full font-bold text-lg transition-all">
+                        Lihat Koleksi
+                    </button>
+                </div>
+            </div>
+            <div class="md:w-1/2 relative flex justify-center md:justify-end"> <!-- Centered image on mobile, right-aligned on desktop -->
+                <img src="/Users/user/Desktop/premium_photo-1727976490117-60812fd55bc9.avif" 
+                     alt="Tampilan produk fashion SatuLook" 
+                     class="rounded-2xl shadow-2xl transform transition duration-500 hover:scale-105 max-w-full md:max-w-lg"> <!-- Max width for image -->
+                <div class="absolute -bottom-5 -left-5 w-32 h-32 bg-yellow-400 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob hidden md:block"></div> <!-- Hidden on mobile, visible on desktop -->
+                <div class="absolute -top-5 -right-5 w-32 h-32 bg-pink-400 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000 hidden md:block"></div> <!-- Hidden on mobile, visible on desktop -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Featured Products -->
+        <section>
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 featured-products-title text-center md:text-left">Produk Terbaru</h2>
+            <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 md:gap-5 lg:gap-6">
+                <!-- Product 1 -->
+                <div class="product-card bg-white rounded-lg overflow-hidden shadow-md border border-gray-100" data-category="shoes" data-id="1"> 
+                    <div class="relative cursor-pointer" onclick="showProductModal(1, 'Sepatu Stylis', 299000, 4.5, 124, 'Sneakers trendi untuk gaya streetwear', 'Sneakers modern dengan kombinasi warna bold dan sol karet tebal yang nyaman digunakan seharian. Bahan premium dengan desain yang stylish.')">
+                        <img src="/Users/user/Desktop/pexels-craytive-1456706.jpg" alt="Sepatu Stylis SatuLook - Sneakers modern dengan kombinasi warna bold dan sol karet tebal" class="w-full h-32 sm:h-40 md:h-48 object-cover">
+                        <span class="absolute top-2 right-2 bg-yellow-400 text-xs font-bold px-2 py-1 rounded-full">NEW</span>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-800 mb-1">Sepatu Stylis</h3>
+                        <div class="flex items-center mb-2">
+                            <div class="flex text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="text-gray-500 text-xs ml-1">(124)</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-3">Sneakers trendi untuk gaya streetwear</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-gray-800">Rp 299.000</span>
+                            <button class="add-to-cart bg-blue-100 text-blue-600 hover:bg-blue-600 hover:text-white p-2 rounded-full transition" data-id="1">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="product-card bg-white rounded-lg overflow-hidden shadow-md border border-gray-100" data-category="shoes" data-id="2">
+                    <div class="relative cursor-pointer" onclick="showProductModal(2, 'Sepatu Kuliah', 249000, 5, 89, 'Nyaman untuk kegiatan sehari-hari', 'Sneaker minimalis dengan sol ringan dan desain ergonomis yang membuatnya nyaman dipakai seharian. Cocok untuk aktivitas kampus dan jalan-jalan.')">
+                        <img src="/Users/user/Desktop/pexels-nathanjhilton-9244882.jpg" alt="Sepatu Kuliah Kekinian SatuLook - Sneaker minimalis dengan sol ringan dan desain ergonomis" class="w-full h-48 object-cover">
+                        <span class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">BEST</span>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-800 mb-1">Sepatu Kuliah</h3>
+                        <div class="flex items-center mb-2">
+                            <div class="flex text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <span class="text-gray-500 text-xs ml-1">(89)</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-3">Nyaman untuk kegiatan sehari-hari</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-gray-800">Rp 249.000</span>
+                            <button class="add-to-cart bg-blue-100 text-blue-600 hover:bg-blue-600 hover:text-white p-2 rounded-full transition" data-id="2">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="product-card bg-white rounded-lg overflow-hidden shadow-md border border-gray-100" data-category="shoes" data-id="3">
+                    <div class="relative cursor-pointer" onclick="showProductModal(3, 'Sepatu Kantor', 359000, 4.8, 56, 'Elegan untuk gaya profesional', 'Formal shoe dengan bahan kulit premium dan detail stitching eksklusif yang memberikan kesan elegan dan profesional.')">
+                        <img src="/Users/user/Desktop/pexels-rohit-sharma-1230131-26587834.jpg" alt="Sepatu Kantor SatuLook - Formal shoe dengan bahan kulit premium dan detail stitching eksklusif" class="w-full h-48 object-cover">
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-800 mb-1">Sepatu Kantor</h3>
+                        <div class="flex items-center mb-2">
+                            <div class="flex text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <span class="text-gray-500 text-xs ml-1">(56)</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-3">Elegan untuk gaya profesional</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-gray-800">Rp 359.000</span>
+                            <button class="add-to-cart bg-blue-100 text-blue-600 hover:bg-blue-600 hover:text-white p-2 rounded-full transition" data-id="3">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="product-card bg-white rounded-lg overflow-hidden shadow-md border border-gray-100" data-category="bags" data-id="4">
+                    <div class="relative cursor-pointer" onclick="showProductModal(4, 'Tas Traveling', 589000, 4.5, 112, 'Sempurna untuk petualangan Anda', 'Backpack besar dengan banyak kompartemen dan bahan tahan air.')">
+                        <img src="/Users/user/Desktop/pexels-pavel-danilyuk-6072978.jpg" alt="Tas Traveling SatuLook - Backpack besar dengan banyak kompartemen dan bahan tahan air" class="w-full h-48 object-cover">
+                        <span class="absolute top-2 right-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-full">LIMITED</span>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-800 mb-1">Tas Traveling</h3>
+                        <div class="flex items-center mb-2">
+                            <div class="flex text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="text-gray-500 text-xs ml-1">(112)</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-3">Sempurna untuk petualangan Anda</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-gray-800">Rp 589.000</span>
+                            <button class="add-to-cart bg-blue-100 text-blue-600 hover:bg-blue-600 hover:text-white p-2 rounded-full transition" data-id="4">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 5 -->
+                <div class="product-card bg-white rounded-lg overflow-hidden shadow-md border border-gray-100" data-category="bags" data-id="5"> 
+                    <div class="relative cursor-pointer" onclick="showProductModal(5, 'Tas Kuliah', 299000, 4.0, 78, 'Fungsional dan stylish', 'Laptop backpack dengan desain minimalis dan padding khusus untuk laptop.')">
+                        <img src="/Users/user/Desktop/pexels-collab-media-173741945-15059375.jpg" alt="Tas Kuliah SatuLook - Laptop backpack dengan desain minimalis dan padding khusus untuk laptop" class="w-full h-48 object-cover">
+                        <span class="absolute top-2 right-2 bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded-full">SALE</span>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-800 mb-1">Tas Kuliah</h3>
+                        <div class="flex items-center mb-2">
+                            <div class="flex text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <span class="text-gray-500 text-xs ml-1">(78)</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-3">Fungsional dan stylish</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-gray-800">Rp 299.000</span>
+                            <button class="add-to-cart bg-blue-100 text-blue-600 hover:bg-blue-600 hover:text-white p-2 rounded-full transition" data-id="5">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 6 -->
+                <div class="product-card bg-white rounded-lg overflow-hidden shadow-md border border-gray-100" data-category="bags" data-id="6">
+                    <div class="relative cursor-pointer" onclick="showProductModal(6, 'Tas Kantor', 429000, 4.8, 65, 'Gaya profesional yang modern', 'Briefcase profesional dengan bahan kulit sintetis berkualitas tinggi.')">
+                        <img src="/Users/user/Desktop/pexels-vlada-karpovich-4452513.jpg" alt="Tas Kantor SatuLook - Briefcase profesional dengan bahan kulit sintetis berkualitas tinggi" class="w-full h-48 object-cover">
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-800 mb-1">Tas Kantor</h3>
+                        <div class="flex items-center mb-2">
+                            <div class="flex text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="text-gray-500 text-xs ml-1">(65)</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-3">Gaya profesional yang modern</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-gray-800">Rp 429.000</span>
+                            <button class="add-to-cart bg-blue-100 text-blue-600 hover:bg-blue-600 hover:text-white p-2 rounded-full transition" data-id="6">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 7 -->
+                <div class="product-card bg-white rounded-lg overflow-hidden shadow-md border border-gray-100" data-category="clothes" data-id="7">
+                    <div class="relative cursor-pointer" onclick="showProductModal(7, 'Kaos Polo', 219000, 5.0, 145, 'Klasik namun selalu trendy', 'Polo shirt dengan bahan katun pilihan dan kerah yang rapi.')">
+                        <img src="/Users/user/Desktop/pexels-artempodrez-7648278.jpg" alt="Kaos Polo SatuLook - Polo shirt dengan bahan katun pilihan dan kerah yang rapi" class="w-full h-48 object-cover">
+                        <span class="absolute top-2 right-2 bg-purple-500 text-white text-xs font-bold px-2 py-1 rounded-full">HOT</span>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-800 mb-1">Kaos Polo</h3>
+                        <div class="flex items-center mb-2">
+                            <div class="flex text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <span class="text-gray-500 text-xs ml-1">(145)</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-3">Klasik namun selalu trendy</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-gray-800">Rp 219.000</span>
+                            <button class="add-to-cart bg-blue-100 text-blue-600 hover:bg-blue-600 hover:text-white p-2 rounded-full transition" data-id="7">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 8 -->
+                <div class="product-card bg-white rounded-lg overflow-hidden shadow-md border border-gray-100" data-category="clothes" data-id="8">
+                    <div class="relative cursor-pointer" onclick="showProductModal(8, 'Kemeja Stylis', 279000, 4.5, 92, 'Gaya urban yang fashionable', 'Kemeja slim fit dengan motif geometris modern dan bahan breathable.')">
+                        <img src="/Users/user/Desktop/pexels-gabrielapereiraph-2635314.jpg" alt="Kemeja Stylis SatuLook - Kemeja slim fit dengan motif geometris modern dan bahan breathable" class="w-full h-48 object-cover">
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-800 mb-1">Kemeja Stylis</h3>
+                        <div class="flex items-center mb-2">
+                            <div class="flex text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <span class="text-gray-500 text-xs ml-1">(92)</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-3">Gaya urban yang fashionable</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-gray-800">Rp 279.000</span>
+                            <button class="add-to-cart bg-blue-100 text-blue-600 hover:bg-blue-600 hover:text-white p-2 rounded-full transition" data-id="8">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 9 -->
+                <div class="product-card bg-white rounded-lg overflow-hidden shadow-md border border-gray-100" data-category="clothes" data-id="9">
+                    <div class="relative cursor-pointer" onclick="showProductModal(9, 'Kaos Trend', 189000, 4.5, 134, 'Ekspresikan gaya Anda', 'T-shirt dengan print graphic yang bold dan bahan katun ringan.')">
+                        <img src="/Users/user/Desktop/pexels-ayoub-moukhliss-1262835-26186218.jpg" alt="Kaos Trend SatuLook - T-shirt dengan print graphic yang bold dan bahan katun ringan" class="w-full h-48 object-cover">
+                        <span class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">BEST</span>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-800 mb-1">Kaos Trend</h3>
+                        <div class="flex items-center mb-2">
+                            <div class="flex text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="text-gray-500 text-xs ml-1">(134)</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-3">Ekspresikan gaya Anda</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-gray-800">Rp 189.000</span>
+                            <button class="add-to-cart bg-blue-100 text-blue-600 hover:bg-blue-600 hover:text-white p-2 rounded-full transition" data-id="9">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 10 -->
+                <div class="product-card bg-white rounded-lg overflow-hidden shadow-md border border-gray-100" data-category="clothes" data-id="10">
+                    <div class="relative cursor-pointer" onclick="showProductModal(10, 'Kemeja Kantor', 329000, 4.8, 76, 'Profesional tanpa mengorbankan kenyamanan', 'Kemeja formal slim fit dengan bahan anti kusut dan kerah yang presisi.')">
+                        <img src="/Users/user/Desktop/pexels-cottonbro-8453937.jpg" alt="Kemeja Kantor SatuLook - Kemeja formal slim fit dengan bahan anti kusut dan kerah yang presisi" class="w-full h-48 object-cover">
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-800 mb-1">Kemeja Kantor</h3>
+                        <div class="flex items-center mb-2">
+                            <div class="flex text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <span class="text-gray-500 text-xs ml-1">(76)</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-3">Profesional tanpa mengorbankan kenyamanan</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-gray-800">Rp 329.000</span>
+                            <button class="add-to-cart bg-blue-100 text-blue-600 hover:bg-blue-600 hover:text-white p-2 rounded-full transition" data-id="10">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Promo Banner -->
+        <section class="my-8 md:my-16">
+            <div class="relative bg-gradient-to-r from-pink-500 to-purple-600 rounded-lg sm:rounded-xl md:rounded-2xl p-4 sm:p-6 md:p-8 lg:p-10 overflow-hidden">
+                <div class="hidden md:block absolute -left-10 -top-10 w-40 h-40 bg-white/10 rounded-full"></div>
+                <div class="hidden md:block absolute -right-10 -bottom-10 w-40 h-40 bg-white/10 rounded-full"></div>
+                <div class="relative z-10 flex flex-col md:flex-row items-center justify-between text-center md:text-left"> <!-- Centered text on mobile, left-aligned on desktop -->
+                    <div class="mb-6 md:mb-0 md:mr-10">
+                        <span class="bg-white/20 text-white px-3 py-1 rounded-full text-xs md:text-sm font-bold mb-2 md:mb-3 inline-block">PROMO TERBATAS!</span>
+                        <h3 class="text-2xl md:text-4xl font-extrabold text-white mb-2 md:mb-3">Diskon Spesial 20%</h3>
+                        <p class="text-sm md:text-lg text-white/90 mb-2">Minimal pembelian Rp 500.000</p>
+                        <p class="text-base md:text-xl font-bold text-white">Gunakan kode: <span class="bg-white/20 px-2 py-1 md:px-3 md:py-1 rounded-md">SATULOOK20</span></p>
+                    </div>
+                    <button id="openPromoModalBtn" class="bg-white text-purple-600 hover:bg-gray-100 px-6 py-3 md:px-8 md:py-4 rounded-full font-bold text-base md:text-lg transition-all transform hover:scale-105 flex items-center gap-2">
+                        <span>Lihat Promo</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimoni -->
+        <section class="mb-8 md:mb-12">
+            <h2 class="text-xl md:text-2xl font-bold text-gray-800 mb-4 md:mb-6 text-center md:text-left">Apa Kata Pelanggan Kami</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <div class="flex items-center mb-4">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/ffa9f78a-ad70-4a01-b497-2666e31e1483.png" alt="Foto profil Rina - Wanita muda tersenyum dengan latar belakang blur" class="w-12 h-12 rounded-full mr-3 object-cover">
+                        <div>
+                            <h4 class="font-semibold">Rina Anggraeni</h4>
+                            <div class="flex text-yellow-400 text-sm">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">"Sepatu kantornya sangat nyaman dipakai seharian. Bahan premium dan desainnya stylish banget!"</p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <div class="flex items-center mb-4">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/49d84e9c-8020-4bf2-ad16-7523f6a11fcb.png" alt="Foto profil Andi - Pria dewasa dengan latar belakang netral" class="w-12 h-12 rounded-full mr-3 object-cover">
+                        <div>
+                            <h4 class="font-semibold">Andi Pratama</h4>
+                            <div class="flex text-yellow-400 text-sm">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">"Tas traveling SatuLook sangat praktis dengan banyak kompartemen. Tahan air pula!"</p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <div class="flex items-center mb-4">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/1f0010e1-25e3-4247-b34f-72930edb9479.png" alt="Foto profil Maya - Wanita profesional dengan ekspresi puas" class="w-12 h-12 rounded-full mr-3 object-cover">
+                        <div>
+                            <h4 class="font-semibold">Maya Sari</h4>
+                            <div class="flex text-yellow-400 text-sm">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">"Kaos polonya adem dan tidak mudah kusut setelah dicuci. Desain kerahnya juga rapi."</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white pt-12 pb-6">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 mb-6 sm:mb-8">
+                <div>
+                    <h4 class="font-bold text-lg mb-4">SATULOOK</h4>
+                    <p class="text-gray-400 mb-4">Fusion fashion untuk gaya yang sempurna di setiap kesempatan.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-lg mb-4">Produk</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Sepatu</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Tas</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Pakaian</a></li>
+                        <li><a href="#" class="text-400 hover:text-white">Koleksi Terbaru</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-lg mb-4">Bantuan</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Hubungi Kami</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">FAQs</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Pengembalian</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Panduan Ukuran</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-lg mb-4">Berlangganan</h4>
+                    <p class="text-gray-400 mb-4">Dapatkan promo dan diskon spesial untuk pelanggan setia.</p>
+                    <div class="flex">
+                        <input type="email" placeholder="Email Anda" class="bg-gray-700 text-white px-4 py-2 rounded-l-md focus:outline-none w-full">
+                        <button class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-r-md"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 pt-6 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 mb-4 md:mb-0">© 2025 SATULOOK. All rights reserved.</p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-white">Terms of Service</a>
+                    <a href="#" class="text-gray-400 hover:text-white">Privacy Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cart Modal -->
+    <div id="cartModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-end">
+        <div class="bg-white w-full max-w-md h-full overflow-y-auto">
+            <div class="flex justify-between items-center p-4 border-b">
+                <h3 class="text-xl font-bold">Keranjang Belanja</h3>
+                <button id="closeCart" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div id="cartItems" class="p-4">
+                <div class="text-center py-8">
+                    <i class="fas fa-shopping-cart text-4xl text-gray-300 mb-2"></i>
+                    <p class="text-gray-500">Keranjang belanja Anda masih kosong</p>
+                </div>
+            </div>
+            
+            <div class="border-t p-4">
+                <div class="flex justify-between mb-4">
+                    <span class="font-bold">Total:</span>
+                    <span id="cartTotal" class="font-bold">Rp 0</span>
+                </div>
+                <button id="checkoutBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-md disabled:bg-gray-300 disabled:cursor-not-allowed" disabled>
+                    Lanjut ke Pembayaran
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="hidden fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-md shadow-lg">
+        Produk telah ditambahkan ke keranjang!
+    </div>
+
+    <!-- Product Detail Modal -->
+    <div id="productModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-4xl max-h-[90vh] overflow-y-auto mx-2">
+            <div class="flex flex-col md:flex-row">
+                <div class="md:w-1/2 p-6">
+                    <img id="modalProductImage" src="" alt="" class="w-full h-auto rounded-lg object-cover">
+                </div>
+                <div class="md:w-1/2 p-6">
+                    <div class="flex justify-between items-start">
+                        <h3 id="modalProductName" class="text-2xl font-bold text-gray-800 mb-2"></h3>
+                        <button id="closeModal" class="text-gray-500 hover:text-gray-700">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="flex items-center mb-4">
+                        <div id="modalProductRating" class="flex text-yellow-400"></div>
+                        <span id="modalProductReviewCount" class="text-gray-500 text-sm ml-1"></span>
+                    </div>
+                    <p id="modalProductDescription" class="text-gray-600 mb-4"></p>
+                    <div class="mb-6">
+                        <h4 class="font-semibold text-gray-800 mb-2">Deskripsi Produk</h4>
+                        <p id="modalProductFullDescription" class="text-gray-600"></p>
+                    </div>
+                    <div class="flex justify-between items-center border-t pt-4">
+                        <span id="modalProductPrice" class="text-2xl font-bold text-gray-800"></span>
+                        <button id="modalAddToCart" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md">
+                            + Keranjang
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div id="paymentModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg w-full max-w-md p-6">
+            <h3 class="text-xl font-bold mb-4">Pilih Metode Pembayaran</h3>
+            <div class="flex flex-col space-y-4">
+                <button id="codPayment" class="bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700">Cash on Delivery (COD)</button>
+
+                <!-- Bank Transfer Section -->
+                <div class="border-t pt-4 mt-4">
+                    <h4 class="font-semibold text-gray-800 mb-2">Transfer Bank</h4>
+                    <button id="briTransfer" class="bg-green-600 text-white py-2 rounded-md hover:bg-green-700 w-full mb-2">Bank BRI</button>
+                    <button id="bcaTransfer" class="bg-red-600 text-white py-2 rounded-md hover:bg-red-700 w-full mb-2">Bank BCA</button>
+                    <button id="bniTransfer" class="bg-purple-600 text-white py-2 rounded-md hover:bg-purple-700 w-full">Bank BNI</button>
+                </div>
+            </div>
+            <button id="closePaymentModal" class="mt-4 text-gray-500 hover:text-gray-700">Tutup</button>
+        </div>
+    </div>
+
+    <!-- Promo Modal -->
+    <div id="promoModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg w-full max-w-2xl p-6 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-2xl font-bold text-gray-800">Voucher & Promo Spesial</h3>
+                <button id="closePromoModal" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Voucher 1: Gratis Ongkir -->
+                <div class="bg-gradient-to-r from-blue-400 to-blue-600 text-white p-5 rounded-lg shadow-md relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-24 h-24 bg-white/20 rounded-full -translate-x-1/2 -translate-y-1/2"></div>
+                    <div class="absolute bottom-0 right-0 w-24 h-24 bg-white/20 rounded-full translate-x-1/2 translate-y-1/2"></div>
+                    <h4 class="font-bold text-xl mb-2">GRATIS ONGKIR</h4>
+                    <p class="text-sm mb-3">Untuk semua pembelian tanpa minimal transaksi.</p>
+                    <div class="flex items-center justify-between">
+                        <span class="bg-white text-blue-600 px-3 py-1 rounded-full font-bold text-sm">ONGKIRFREE</span>
+                        <button class="copy-voucher bg-white/30 hover:bg-white/50 text-white px-3 py-1 rounded-md text-sm transition">Salin</button>
+                    </div>
+                </div>
+
+                <!-- Voucher 2: Cashback 10% -->
+                <div class="bg-gradient-to-r from-purple-400 to-purple-600 text-white p-5 rounded-lg shadow-md relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-24 h-24 bg-white/20 rounded-full -translate-x-1/2 -translate-y-1/2"></div>
+                    <div class="absolute bottom-0 right-0 w-24 h-24 bg-white/20 rounded-full translate-x-1/2 translate-y-1/2"></div>
+                    <h4 class="font-bold text-xl mb-2">CASHBACK 10%</h4>
+                    <p class="text-sm mb-3">Maksimal cashback Rp 50.000. Min. pembelian Rp 200.000.</p>
+                    <div class="flex items-center justify-between">
+                        <span class="bg-white text-purple-600 px-3 py-1 rounded-full font-bold text-sm">CASHBACK10</span>
+                        <button class="copy-voucher bg-white/30 hover:bg-white/50 text-white px-3 py-1 rounded-md text-sm transition">Salin</button>
+                    </div>
+                </div>
+
+                <!-- Voucher 3: Diskon 20% -->
+                <div class="bg-gradient-to-r from-pink-400 to-pink-600 text-white p-5 rounded-lg shadow-md relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-24 h-24 bg-white/20 rounded-full -translate-x-1/2 -translate-y-1/2"></div>
+                    <div class="absolute bottom-0 right-0 w-24 h-24 bg-white/20 rounded-full translate-x-1/2 -translate-y-1/2"></div>
+                    <h4 class="font-bold text-xl mb-2">DISKON 20%</h4>
+                    <p class="text-sm mb-3">Untuk produk pilihan. Min. pembelian Rp 300.000.</p>
+                    <div class="flex items-center justify-between">
+                        <span class="bg-white text-pink-600 px-3 py-1 rounded-full font-bold text-sm">DISKON20</span>
+                        <button class="copy-voucher bg-white/30 hover:bg-white/50 text-white px-3 py-1 rounded-md text-sm transition">Salin</button>
+                    </div>
+                </div>
+
+                <!-- Voucher 4: Diskon Pembelian 50% (Min. 2 Juta) -->
+                <div class="bg-gradient-to-r from-yellow-400 to-yellow-600 text-white p-5 rounded-lg shadow-md relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-24 h-24 bg-white/20 rounded-full -translate-x-1/2 -translate-y-1/2"></div>
+                    <div class="absolute bottom-0 right-0 w-24 h-24 bg-white/20 rounded-full translate-x-1/2 translate-y-1/2"></div>
+                    <h4 class="font-bold text-xl mb-2">DISKON 50%</h4>
+                    <p class="text-sm mb-3">Untuk pembelian di atas Rp 2.000.000. Maks. diskon Rp 1.000.000.</p>
+                    <div class="flex items-center justify-between">
+                        <span class="bg-white text-yellow-600 px-3 py-1 rounded-full font-bold text-sm">SUPERHEMAT</span>
+                        <button class="copy-voucher bg-white/30 hover:bg-white/50 text-white px-3 py-1 rounded-md text-sm transition">Salin</button>
+                    </div>
+                </div>
+
+                <!-- Voucher 5: Diskon 15% (New User) -->
+                <div class="bg-gradient-to-r from-teal-400 to-teal-600 text-white p-5 rounded-lg shadow-md relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-24 h-24 bg-white/20 rounded-full -translate-x-1/2 -translate-y-1/2"></div>
+                    <div class="absolute bottom-0 right-0 w-24 h-24 bg-white/20 rounded-full translate-x-1/2 translate-y-1/2"></div>
+                    <h4 class="font-bold text-xl mb-2">DISKON 15%</h4>
+                    <p class="text-sm mb-3">Khusus pengguna baru. Min. pembelian Rp 100.000.</p>
+                    <div class="flex items-center justify-between">
+                        <span class="bg-white text-teal-600 px-3 py-1 rounded-full font-bold text-sm">NEWUSER15</span>
+                        <button class="copy-voucher bg-white/30 hover:bg-white/50 text-white px-3 py-1 rounded-md text-sm transition">Salin</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Cart functionality
+        const cart = [];
+        const cartBtn = document.getElementById('cartBtn');
+        const cartCounter = document.getElementById('cartCounter');
+        cartCounter.classList.add('hidden'); // Initialize as hidden
+        const cartModal = document.getElementById('cartModal');
+        const closeCart = document.getElementById('closeCart');
+        const cartItems = document.getElementById('cartItems');
+        const cartTotal = document.getElementById('cartTotal');
+        const checkoutBtn = document.getElementById('checkoutBtn');
+        const notification = document.getElementById('notification');
+        
+        // Products data
+        const products = [
+            { id: 1, name: 'Sepatu Stylis', price: 299000 },
+            { id: 2, name: 'Sepatu Kuliah', price: 249000 },
+            { id: 3, name: 'Sepatu Kantor', price: 359000 },
+            { id: 4, name: 'Tas Traveling', price: 589000 },
+            { id: 5, name: 'Tas Kuliah', price: 299000 },
+            { id: 6, name: 'Tas Kantor', price: 429000 },
+            { id: 7, name: 'Kaos Polo', price: 219000 },
+            { id: 8, name: 'Kemeja Stylis', price: 279000 },
+            { id: 9, name: 'Kaos Trend', price: 189000 },
+            { id: 10, name: 'Kemeja Kantor', price: 329000 }
+        ];
+        
+        // Add to cart - delegation version (works for dynamically added elements)
+        document.addEventListener('click', function(e) {
+            const button = e.target.closest('.add-to-cart');
+            if (button) {
+                const productId = parseInt(button.getAttribute('data-id'));
+                const product = products.find(p => p.id === productId);
+                
+                const existingItem = cart.find(item => item.id === productId);
+                if (existingItem) {
+                    existingItem.quantity += 1;
+                } else {
+                    cart.push({
+                        id: productId,
+                        name: product.name,
+                        price: product.price,
+                        quantity: 1
+                    });
+                }
+                
+                updateCart();
+                
+                // Show notification
+                notification.classList.remove('hidden');
+                setTimeout(() => {
+                    notification.classList.add('hidden');
+                }, 3000);
+            }
+        });
+        
+        // Update cart UI
+        function updateCart() {
+            // Update counter
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartCounter.textContent = totalItems;
+            
+            if (totalItems > 0) {
+                cartCounter.classList.remove('hidden');
+            } else {
+                cartCounter.classList.add('hidden');
+            }
+            
+            // Update cart modal
+            if (cart.length === 0) {
+                cartItems.innerHTML = `
+                    <div class="text-center py-8">
+                        <i class="fas fa-shopping-cart text-4xl text-gray-300 mb-2"></i>
+                        <p class="text-gray-500">Keranjang belanja Anda masih kosong</p>
+                    </div>
+                `;
+                checkoutBtn.disabled = true;
+            } else {
+                let itemsHTML = '';
+                let total = 0;
+                
+                cart.forEach(item => {
+                    total += item.price * item.quantity;
+                    itemsHTML += `
+                        <div class="flex items-center justify-between mb-4 pb-4 border-b">
+                            <div>
+                                <h4 class="font-semibold">${item.name}</h4>
+                                <p class="text-sm text-gray-500">Rp ${item.price.toLocaleString('id-ID')} x ${item.quantity}</p>
+                            </div>
+                            <div class="flex items-center">
+                                <button class="decrease-quantity text-gray-500 hover:text-blue-500 px-2" data-id="${item.id}">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <span class="px-2">${item.quantity}</span>
+                                <button class="increase-quantity text-gray-500 hover:text-blue-500 px-2" data-id="${item.id}">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                                <button class="remove-item text-red-500 hover:text-red-700 ml-4" data-id="${item.id}">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                cartItems.innerHTML = itemsHTML;
+                cartTotal.textContent = `Rp ${total.toLocaleString('id-ID')}`;
+                checkoutBtn.disabled = false;
+                
+                // Add event listeners to new buttons
+                document.querySelectorAll('.decrease-quantity').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const productId = parseInt(this.getAttribute('data-id'));
+                        const itemIndex = cart.findIndex(item => item.id === productId);
+                        
+                        if (cart[itemIndex].quantity > 1) {
+                            cart[itemIndex].quantity -= 1;
+                        } else {
+                            cart.splice(itemIndex, 1);
+                        }
+                        
+                        updateCart();
+                    });
+                });
+                
+                document.querySelectorAll('.increase-quantity').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const productId = parseInt(this.getAttribute('data-id'));
+                        const itemIndex = cart.findIndex(item => item.id === productId);
+                        
+                        cart[itemIndex].quantity += 1;
+                        updateCart();
+                    });
+                });
+                
+                document.querySelectorAll('.remove-item').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const productId = parseInt(this.getAttribute('data-id'));
+                        const itemIndex = cart.findIndex(item => item.id === productId);
+                        
+                        cart.splice(itemIndex, 1);
+                        updateCart();
+                    });
+                });
+            }
+        }
+        
+        // Toggle cart modal
+        cartBtn.addEventListener('click', () => {
+            cartModal.classList.remove('hidden');
+        });
+        
+        closeCart.addEventListener('click', () => {
+            cartModal.classList.add('hidden');
+        });
+        
+        // Filter products by category
+        const categoryTabs = document.querySelectorAll('.category-tab');
+        const productCards = document.querySelectorAll('.product-card');
+        
+        // Apply filter when page loads (shows all products)
+        filterProducts('all');
+        
+        categoryTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                const category = this.getAttribute('data-category');
+                
+                // Update active tab
+                categoryTabs.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                
+                filterProducts(category);
+            });
+        });
+
+        function filterProducts(category) {
+            document.querySelector('.featured-products-title').textContent = 
+                category === 'all' ? 'Semua Produk' :
+                category === 'shoes' ? 'Koleksi Sepatu' :
+                category === 'bags' ? 'Koleksi Tas' : 'Koleksi Pakaian';
+                
+            productCards.forEach(card => {
+                if (category === 'all' || card.getAttribute('data-category') === category) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+        
+        // Format currency
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(amount);
+        }
+
+        // Product Modal functionality
+        const productModal = document.getElementById('productModal');
+        const closeModal = document.getElementById('closeModal');
+        const modalAddToCart = document.getElementById('modalAddToCart');
+        
+        function showProductModal(id, name, price, rating, reviewCount, description, fullDescription) {
+            const modal = document.getElementById('productModal');
+            document.getElementById('modalProductName').textContent = name;
+            document.getElementById('modalProductPrice').textContent = formatCurrency(price);
+            document.getElementById('modalProductDescription').textContent = description;
+            document.getElementById('modalProductFullDescription').textContent = fullDescription;
+            document.getElementById('modalProductReviewCount').textContent = `(${reviewCount})`;
+            
+            // Set product image (use the same as in the card)
+            const productCard = document.querySelector(`.product-card[data-id="${id}"]`);
+            if (productCard) {
+                const imgSrc = productCard.querySelector('img').src;
+                document.getElementById('modalProductImage').src = imgSrc;
+                document.getElementById('modalProductImage').alt = name;
+            }
+            
+            // Set rating stars
+            const ratingContainer = document.getElementById('modalProductRating');
+            ratingContainer.innerHTML = '';
+            const fullStars = Math.floor(rating);
+            const hasHalfStar = rating % 1 >= 0.5;
+            
+            for (let i = 0; i < 5; i++) {
+                const star = document.createElement('i');
+                if (i < fullStars) {
+                    star.className = 'fas fa-star';
+                } else if (i === fullStars && hasHalfStar) {
+                    star.className = 'fas fa-star-half-alt';
+                } else {
+                    star.className = 'far fa-star';
+                }
+                ratingContainer.appendChild(star);
+            }
+            
+            // Set add to cart button
+            modalAddToCart.setAttribute('data-id', id);
+            
+            modal.classList.remove('hidden');
+        }
+        
+        closeModal.addEventListener('click', () => {
+            productModal.classList.add('hidden');
+        });
+        
+        modalAddToCart.addEventListener('click', function() {
+            const productId = parseInt(this.getAttribute('data-id'));
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+            
+            const existingItem = cart.find(item => item.id === productId);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id: productId,
+                    name: product.name,
+                    price: product.price,
+                    quantity: 1
+                });
+            }
+            
+            updateCart();
+            productModal.classList.add('hidden');
+            
+            // Show notification
+            notification.classList.remove('hidden');
+            notification.classList.add('cart-notification');
+            setTimeout(() => {
+                notification.classList.add('hidden');
+                notification.classList.remove('cart-notification');
+            }, 3000);
+        });
+
+        // Mobile menu navigation
+        document.getElementById('mobileHome').addEventListener('click', (e) => {
+            e.preventDefault();
+            mobileMenu.classList.add('hidden');
+            heroSection.classList.remove('hidden');
+            mainContent.classList.remove('hidden');
+            document.querySelector('.featured-products-title').textContent = 'Produk Terbaru';
+        });
+
+        document.getElementById('mobileProduk').addEventListener('click', (e) => {
+            e.preventDefault();
+            mobileMenu.classList.add('hidden');
+            heroSection.classList.add('hidden');
+            mainContent.classList.remove('hidden');
+            document.querySelector('.featured-products-title').textContent = 'Semua Produk';
+            filterProducts('all');
+        });
+
+        document.getElementById('mobileKontak').addEventListener('click', (e) => {
+            e.preventDefault();
+            mobileMenu.classList.add('hidden');
+            heroSection.classList.add('hidden');
+            mainContent.classList.add('hidden');
+            
+            // Create contact display if it doesn't exist
+            if (!document.getElementById('contactDisplay')) {
+                const contactDiv = document.createElement('div');
+                contactDiv.id = 'contactDisplay';
+                contactDiv.className = 'fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50';
+                contactDiv.innerHTML = `
+                    <div class="bg-white p-6 rounded-lg max-w-md w-full">
+                        <h3 class="text-xl font-bold mb-4">Hubungi Kami</h3>
+                        <p class="text-lg mb-2">Nomor Kontak: <span class="font-semibold">085171203485</span></p>
+                        <p class="text-lg mb-4">Email: <span class="font-semibold">satulookfashion@gmail.com</span></p>
+                        <button id="closeContact" class="w-full bg-blue-600 text-white py-2 rounded-md">
+                            Tutup
+                        </button>
+                    </div>
+                `;
+                document.body.appendChild(contactDiv);
+                
+                // Close button functionality
+                document.getElementById('closeContact').addEventListener('click', () => {
+                    contactDiv.remove();
+                });
+            }
+        });
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!mobileMenuBtn.contains(e.target) && !mobileMenu.contains(e.target)) {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+
+        // Show all products when "Belanja Sekarang" is clicked
+        document.getElementById('shopNowBtn').addEventListener('click', () => {
+            heroSection.classList.add('hidden');
+            mainContent.classList.remove('hidden');
+            document.querySelector('.featured-products-title').textContent = 'Semua Produk';
+            filterProducts('all');
+        });
+
+        // Show cart items when "Lihat Koleksi" is clicked
+        document.getElementById('viewCollectionsBtn').addEventListener('click', () => {
+            heroSection.classList.add('hidden');
+            mainContent.classList.remove('hidden');
+            document.querySelector('.featured-products-title').textContent = 'Produk Dalam Keranjang';
+            
+            // Hide all products first
+            document.querySelectorAll('.product-card').forEach(card => {
+                card.style.display = 'none';
+            });
+            
+            // Show only products in cart
+            if (cart.length === 0) {
+                document.querySelector('.featured-products-title').textContent = 'Keranjang Kosong';
+                return;
+            }
+            
+            cart.forEach(item => {
+                const productCard = document.querySelector(`.product-card[data-id="${item.id}"]`);
+                if (productCard) {
+                    productCard.style.display = 'block';
+                }
+            });
+        });
+
+        // Navigation functionality
+        const heroSection = document.querySelector('.bg-gradient-to-r');
+        const mainContent = document.querySelector('main');
+        const homeLink = document.getElementById('homeLink');
+        const produkLink = document.getElementById('produkLink');
+        const kontakLink = document.getElementById('kontakLink');
+        // const featuredProducts = document.querySelector('.featured-products-title').parentElement; // This variable was declared but not used, can be removed or used if needed.
+
+        homeLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            heroSection.classList.remove('hidden');
+            mainContent.classList.remove('hidden');
+            document.querySelector('.featured-products-title').textContent = 'Produk Terbaru';
+        });
+
+        produkLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            heroSection.classList.add('hidden');
+            mainContent.classList.remove('hidden');
+            document.querySelector('.featured-products-title').textContent = 'Semua Produk';
+            filterProducts('all');
+        });
+
+        kontakLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            heroSection.classList.add('hidden');
+            mainContent.classList.add('hidden');
+            
+            // Create contact display if it doesn't exist
+            if (!document.getElementById('contactDisplay')) {
+                const contactDiv = document.createElement('div');
+                contactDiv.id = 'contactDisplay';
+                contactDiv.className = 'fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50';
+                contactDiv.innerHTML = `
+                    <div class="bg-white p-6 rounded-lg max-w-md w-full">
+                        <h3 class="text-xl font-bold mb-4">Hubungi Kami</h3>
+                        <p class="text-lg mb-2">Nomor Kontak: <span class="font-semibold">085171203485</span></p>
+                        <p class="text-lg mb-4">Email: <span class="font-semibold">satulookfashion@gmail.com</span></p>
+                        <button id="closeContact" class="w-full bg-blue-600 text-white py-2 rounded-md">
+                            Tutup
+                        </button>
+                    </div>
+                `;
+                document.body.appendChild(contactDiv);
+                
+                // Close button functionality
+                document.getElementById('closeContact').addEventListener('click', () => {
+                    contactDiv.remove();
+                });
+            }
+        });
+
+        // --- PAYMENT MODAL JAVASCRIPT ---
+        // Get the payment modal elements
+        const paymentModal = document.getElementById('paymentModal');
+        const closePaymentModal = document.getElementById('closePaymentModal');
+        const codPayment = document.getElementById('codPayment');
+        const briTransfer = document.getElementById('briTransfer');
+        const bcaTransfer = document.getElementById('bcaTransfer');
+        const bniTransfer = document.getElementById('bniTransfer');
+
+        // Show payment modal when checkout button is clicked
+        checkoutBtn.addEventListener('click', () => {
+            // This check is redundant if the button is disabled, but good for safety
+            if (cart.length === 0) {
+                alert("Keranjang belanja Anda masih kosong!");
+                return;
+            }
+            paymentModal.classList.remove('hidden'); // Show the payment modal
+            cartModal.classList.add('hidden'); // Hide the cart modal if it's open
+        });
+
+        // Close payment modal
+        closePaymentModal.addEventListener('click', () => {
+            paymentModal.classList.add('hidden');
+        });
+
+        // Function to handle payment completion (reduces redundancy)
+        function completePayment(methodName, bankDetails = '') {
+            alert(`Anda telah memilih ${methodName}. ${bankDetails}\n\nTerima kasih atas pesanan Anda!`);
+            paymentModal.classList.add('hidden'); // Hide the payment modal
+            cart.length = 0; // Clear the cart array
+            updateCart(); // Update the cart UI (this will also hide cart counter and disable checkout button)
+        }
+
+        // Handle Cash on Delivery payment
+        codPayment.addEventListener('click', () => {
+            completePayment("Cash on Delivery (COD)");
+        });
+
+        // Handle Bank BRI Transfer
+        briTransfer.addEventListener('click', () => {
+            completePayment(
+                "Transfer Bank BRI",
+                "Silakan transfer ke rekening berikut:\n\nBank: BRI\nNomor Rekening: 1234-5678-9012-3456\nAtas Nama: SATULOOK FASHION\n\nMohon lakukan konfirmasi pembayaran setelah transfer."
+            );
+        });
+
+        // Handle Bank BCA Transfer
+        bcaTransfer.addEventListener('click', () => {
+            completePayment(
+                "Transfer Bank BCA",
+                "Silakan transfer ke rekening berikut:\n\nBank: BCA\nNomor Rekening: 0987-6543-21\nAtas Nama: SATULOOK FASHION\n\nMohon lakukan konfirmasi pembayaran setelah transfer."
+            );
+        });
+
+        // Handle Bank BNI Transfer
+        bniTransfer.addEventListener('click', () => {
+            completePayment(
+                "Transfer Bank BNI",
+                "Silakan transfer ke rekening berikut:\n\nBank: BNI\nNomor Rekening: 7890-1234-5678\nAtas Nama: SATULOOK FASHION\n\nMohon lakukan konfirmasi pembayaran setelah transfer."
+            );
+        });
+        // --- END PAYMENT MODAL JAVASCRIPT ---
+
+
+        // --- PROMO MODAL JAVASCRIPT ---
+        const promoModal = document.getElementById('promoModal');
+        const closePromoModal = document.getElementById('closePromoModal');
+        const openPromoModalBtn = document.getElementById('openPromoModalBtn'); // Corrected ID for the button
+        const copyVoucherButtons = document.querySelectorAll('.copy-voucher');
+
+        // Open promo modal
+        openPromoModalBtn.addEventListener('click', () => {
+            promoModal.classList.remove('hidden');
+        });
+
+        // Close promo modal
+        closePromoModal.addEventListener('click', () => {
+            promoModal.classList.add('hidden');
+        });
+
+        // Copy voucher code to clipboard
+        copyVoucherButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                const voucherCodeSpan = e.target.previousElementSibling; // Get the span containing the voucher code
+                const voucherCode = voucherCodeSpan.textContent;
+
+                // Use Clipboard API to copy text
+                navigator.clipboard.writeText(voucherCode).then(() => {
+                    // Provide feedback to the user
+                    const originalText = button.textContent;
+                    button.textContent = 'Disalin!';
+                    button.classList.add('bg-green-500'); // Optional: change color for feedback
+                    setTimeout(() => {
+                        button.textContent = originalText;
+                        button.classList.remove('bg-green-500');
+                    }, 1500);
+                }).catch(err => {
+                    console.error('Failed to copy text: ', err);
+                    alert('Gagal menyalin kode voucher. Silakan salin manual: ' + voucherCode);
+                });
+            });
+        });
+        // --- END PROMO MODAL JAVASCRIPT ---
+    </script>
+</body>
+</html>
